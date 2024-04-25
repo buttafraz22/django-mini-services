@@ -5,6 +5,7 @@ class EmailSerializer(serializers.Serializer):
     subject = serializers.CharField(max_length=50)
     content = serializers.CharField()
     recipient = serializers.EmailField()
+    message = serializers.CharField()
 
 
     class Meta:
