@@ -4,3 +4,9 @@ django_filter==24.2
 markdown==3.6
 python-dotenv==1.0.1
 mysqlclient==2.2.4
+cffi==1.16.0
+cryptography==42.0.5
+djangorestframework-simplejwt==5.3.1
+pycparser==2.22
+pyjwt==2.8.0
+django-cors-headers==4.3.1
