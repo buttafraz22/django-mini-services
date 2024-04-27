@@ -24,6 +24,7 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     def get(self, request):
+        
         email = request.data['email']
         password = request.data['password']
         
@@ -70,9 +71,15 @@ class UserView(APIView):
         
         try:
             payload=jwt.decode(token, os.environ['JWT_SECRET'], algorithms=['HS256'])
+        
+        except jwt.ExpiredSignatureError:
+            return Response(data={"message": "Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        except jwt.InvalidTokenError:
+            return Response(data={"message": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
             
-        except:
-            return Response(data={"message": "Error in Decoding the Payload"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response(data={"message": f"Error in Decoding the Payload {str(e)}"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         user = User.objects.filter(id=payload['id']).first()
         print(user.email)

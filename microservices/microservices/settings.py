@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'emailservice',
     'corsheaders',  # Prevent the CORS Error
-    'users'
+    'users',
+    'invoicing'
 ]
 
 MIDDLEWARE = [

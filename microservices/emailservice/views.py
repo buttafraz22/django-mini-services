@@ -4,11 +4,18 @@ from rest_framework.response import Response
 from django.core.mail import send_mail, BadHeaderError
 from .serializers import EmailSerializer
 from .models import Email
+from users.views import UserView
 
 # Create your views here.
 
 class SendEmailAPIView(APIView):
     def post(self, request):
+        # User Validation. If User is valid, then proceed with sending email
+        view = UserView()
+        user = view.get(request)
+        if not user:
+            return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
         serializer = EmailSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -17,7 +24,7 @@ class SendEmailAPIView(APIView):
         subject = serializer.validated_data['subject']
         content = serializer.validated_data['content']
         recipient = serializer.validated_data['recipient']
-        message = serializer.validated_data['message']
+        message = serializer.validated_data['message'] or " "
 
         if type(recipient) != type(list):
             recipient = [recipient]
