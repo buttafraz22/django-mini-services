@@ -45,7 +45,7 @@ class ProcessOrderView(APIView):
             
             # Check for validation
             if item_data['quantity'] > item_data['product'].stock:
-                order.delete()
+                order.delete()  # Rollback the current transaction
                 return Response({"Quantity is greater than the stock in existance."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
             item_data['product'].stock -= item_data['quantity']
